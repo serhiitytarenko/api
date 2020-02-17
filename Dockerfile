@@ -1,10 +1,15 @@
 FROM ubuntu:latest
-MAINTAINER Tytarenko Serhii tyarenko.sergey@gmai.com
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
+
+RUN apt-get update \
+  && apt-get install -y python3-pip python3-dev \
+  && cd /usr/local/bin \
+  && ln -s /usr/bin/python3 python \
+  && pip3 install --upgrade pip 
+
 COPY . /app
 WORKDIR /app
+
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+RUN pip install -r ./src/requirements/base.txt
+
+CMD [ "python",  "./src/app.py" ]
